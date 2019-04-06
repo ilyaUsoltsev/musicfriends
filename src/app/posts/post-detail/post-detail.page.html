@@ -1,0 +1,54 @@
+
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/posts" text="Назад"></ion-back-button>
+          </ion-buttons>
+        <ng-container *ngIf="userId">
+          <ion-buttons *ngIf="userId === post?.userId" slot="primary">
+              <ion-button  (click)="onEditPost()">
+                  <ion-icon slot="icon-only" name="create"></ion-icon>
+              </ion-button>
+              <ion-button  (click)="onDeletePost()">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+          </ion-buttons>
+
+        </ng-container>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center>
+          <ion-spinner *ngIf="isLoading"></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="!isLoading">
+      <ion-row class="title" text-center >
+        <ion-col size-sm="6" offset-sm="3">
+          <h2> {{post.title}} </h2>
+          <div>
+            <ion-button size="small" fill="outline" [routerLink]="'/user/' + post.username">
+              {{post.username}}
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="post.imageUrl">
+        <ion-col size-sm="4" offset-sm="4">
+          <ion-img [src]="post?.imageUrl"></ion-img>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p class="description"> 
+            {{post.description}}
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+

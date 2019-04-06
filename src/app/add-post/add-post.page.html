@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="primary">
+          <ion-button (click)="onCancel()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title *ngIf="!post">Мой новый пост</ion-title>
+        <ion-title *ngIf="post">Редактируем</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content>
+      <form #f="ngForm" (ngSubmit)="onAddPost(f)">
+        <ion-grid>
+          <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-item>
+                <ion-label>Кого ищем?</ion-label>
+                <ion-select 
+                [ngModel]="post?.mode || 'Музыкант'" 
+                name="mode"
+                okText="Да"
+                #modeCtrl="ngModel"
+                cancelText="Отмена"
+                [disabled]="post ? true : false"
+                >
+                <ion-select-option value="Музыкант">Музыканта</ion-select-option>
+                <ion-select-option value="Группа">Группу</ion-select-option>
+                <ion-select-option value="Срочно">Срочную замену</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+                <ion-label>Инструмент</ion-label>
+                <ion-select
+                [ngModel]="post?.instrument || 'Гитара'" 
+                [disabled]="post ? true : false"
+                  name="instrument"
+                  okText="Да"
+                    cancelText="Отмена">
+                  <ion-select-option value="Гитара">Гитара</ion-select-option>
+                  <ion-select-option value="Вокал">Вокал</ion-select-option>
+                  <ion-select-option value="Бас">Бас</ion-select-option>
+                  <ion-select-option value="Барабаны">Барабаны</ion-select-option>
+                  <ion-select-option value="Клавиши">Клавиши</ion-select-option>
+                  <ion-select-option value="Духовые">Духовые</ion-select-option>
+                  <ion-select-option value="DJ/Sampler">DJ/Sampler</ion-select-option>
+                  <ion-select-option value="Другое">Другое</ion-select-option>
+                </ion-select>
+              </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Заголовок</ion-label>
+            <ion-input
+            type="text"
+            [ngModel]="post?.title || ''" 
+            required 
+            max-length="20"
+            name="title" 
+            [placeholder]="modeCtrl.value === 'Группа' ? 'СуперМузыкант ищет...' : 'СуперГруппа ищет...'"
+              ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Описание</ion-label>
+            <ion-textarea 
+            [ngModel]="post?.description || ''" 
+            required
+            rows="6"
+            name="description" 
+            placeholder = "Не забудьте указать контакты и ссылку на демо"
+            ></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Картинка</ion-label>
+            <ion-input 
+            [ngModel]="post?.imageUrl || ''" 
+            name="imageUrl" 
+            placeholder = "С картинкой всегда лучше"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating">Направление</ion-label>
+              <ion-input type="text" 
+              [ngModel]="post?.style || ''" 
+              required name="style" placeholder="РОГГГ!"></ion-input>
+            </ion-item>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+              <ion-label>Город</ion-label>
+              <ion-select 
+              [ngModel]="post?.city || 'Москва'" 
+              [disabled]="post ? true : false"
+              name="city" okText="Да" cancelText="Отмена">
+              <ion-select-option value="Москва">Москва</ion-select-option>
+              <ion-select-option value="СПБ">СПБ</ion-select-option>
+              <ion-select-option value="Самара">Самара</ion-select-option>
+              <ion-select-option value="Уфа">УФА</ion-select-option>
+              <ion-select-option value="Новосибирск">Новосибирск</ion-select-option>
+              <ion-select-option value="Омск">Омск</ion-select-option>
+              <ion-select-option value="Другой">Другое</ion-select-option>
+              </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button *ngIf="!post" expand="block" type="submit" [disabled]='!f.valid'>Найдись!</ion-button>
+          <ion-button *ngIf="post" expand="block" type="submit" [disabled]='!f.valid'>Сохраниться</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

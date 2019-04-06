@@ -1,3 +1,46 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-menu side="start" menuId="m1" contentId="content1">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>
+              MF<ion-icon name="play" color="secondary"></ion-icon>
+            </ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-list>
+              <ion-menu-toggle >
+                <ion-item routerLink="/">
+                  <ion-icon name="people" slot="start"></ion-icon>
+                  <ion-label>Поиск музыкантов</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle >
+                <ion-item routerLink="/repbases">
+                  <ion-icon name="microphone" slot="start"></ion-icon>
+                  <ion-label>Репбазы</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle >
+                <ion-item routerLink="/profile">
+                  <ion-icon name="person" slot="start"></ion-icon>
+                  <ion-label>Профиль</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle *ngIf="authService.userIsAuthenticated">
+                <ion-item (click)="onLogout()" button>
+                  <ion-icon name="exit" slot="start"></ion-icon>
+                  <ion-label>Выйти</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+              <ion-menu-toggle *ngIf="!authService.userIsAuthenticated">
+                <ion-item routerLink="/auth" button>
+                  <ion-icon name="exit" slot="start"></ion-icon>
+                  <ion-label>Войти</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+        </ion-content>
+      </ion-menu>
+  <ion-router-outlet id="content1"></ion-router-outlet>
 </ion-app>

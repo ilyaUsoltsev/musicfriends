@@ -1,0 +1,32 @@
+
+  <ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/posts" text="Назад"></ion-back-button>
+          </ion-buttons>
+      <ion-title>{{user?.username}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-grid  *ngIf="isLoading">
+      <ion-row>
+        <ion-col>
+          <ion-spinner></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="!isLoading">
+      <ion-row>
+        <ion-col size-sm="4" offset-sm="4">
+          <ion-img [src]="user?.image"></ion-img>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>info</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+

@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+        <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Репбазы</ion-title>
+    <ion-buttons slot="primary">
+        <ion-button (click)="onAddRepbase()">
+          <ion-icon name="add" slot="icon-only" ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-segment (ionChange)="onFilterUpdate($event)">
+            <ion-segment-button value="list" checked>
+              Список
+            </ion-segment-button>
+            <ion-segment-button value="map">
+              Карта
+            </ion-segment-button>
+          </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+          <ion-list margin-bottom>
+              <ion-item class="ion-no-padding">
+                  <ion-label>
+                    <ion-icon name="home" slot="icon-only"></ion-icon>
+                    Город</ion-label>
+                  <ion-select (ionChange)="onCityChange()" [(ngModel)]="selectedCity" okText="Да" cancelText="Отмена">
+                    <ion-select-option *ngFor="let city of cities" [value]="city">{{city}}</ion-select-option>
+                  </ion-select>
+              </ion-item>
+            </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isLoading">
+        <ion-col text-center>
+          <ion-spinner ></ion-spinner>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="repbases?.length===0 && !isLoading">
+        <ion-col text-center>
+          <ion-text>Добавь запись. Будь первым!</ion-text>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isLoading && repbases?.length>0">
+      <ion-col text-center size-xs="10" offset-xs="1" size-sm="6" offset-sm="3">
+        <ion-virtual-scroll [items]="repbases" [approxItemHeight]="'40px'">
+          <ion-item
+          *virtualItem = "let repbase"
+          [routerLink]="['/','repbases', repbase.id, selectedCity]"
+          detail
+          #repbaseslist
+          no-padding
+          >
+            <ion-label class="transparent">
+              <ion-text class="repbase-title">{{repbase.title}}</ion-text>
+              <p></p>
+              <ion-text color="secondary" class="description">от {{repbase.priceFrom}} руб</ion-text> 
+            </ion-label>
+          </ion-item>
+        </ion-virtual-scroll>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        map all
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>

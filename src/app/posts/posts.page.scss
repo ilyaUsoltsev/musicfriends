@@ -1,0 +1,32 @@
+@keyframes SlidingItem {
+    0% {
+      padding-left: 100px;
+    }
+    100% {
+      padding-left: 0px;
+    } 
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .post-title {
+    display: block;
+    text-transform: uppercase;
+    font-size: 1rem;
+  }
+
+ ion-content {
+    --background: url('https://source.unsplash.com/user/erondu/1600x900');
+  }
+
+// ion-grid {
+//     --background: rgba(0,0,0,0);
+//     --border-color: rgba(0, 0, 0, 0);
+// }
+
+
+
+
+

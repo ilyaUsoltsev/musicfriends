@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/repbases" text="Назад"></ion-back-button>
+        </ion-buttons>
+    <ion-title>Добавить Базу</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form [formGroup]="form">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="home" slot="icon-only"></ion-icon>
+                    Город</ion-label>
+                  <ion-select [value]="this.authService.userCity.name" formControlName="title" okText="Да" cancelText="Отмена">
+                    <ion-select-option *ngFor="let city of cities" [value]="city">{{city}}</ion-select-option>
+                  </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating">Название</ion-label>
+              <ion-input placeholder="Рок над волгой" type="text" autocomplete autocorrect formControlName="title"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating" >Описание</ion-label>
+              <ion-textarea rows="3" placeholder="Лучшая база на Волге!" formControlName="description"></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!form.get('description').valid && form.get('description').touched">
+          <ion-col size-sm="6" offset-sm="3">
+            <label color="danger">Не более 300 символов</label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size-sm="3" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Цена за 3 часа (руб)</ion-label>
+                <ion-input type="number" placeholder="500" formControlName="priceFrom"></ion-input>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size-sm="3" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Сайт</ion-label>
+                <ion-input type="url" placeholder="https://suberbasa.rock" formControlName="website"></ion-input>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size-sm="3" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Телефон</ion-label>
+                <ion-input placeholder="212-85-06" type="tel" formControlName="phone"></ion-input>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="3" offset-sm="3">
+            <app-location-picker (locationPick)="onLocationPicked($event)"></app-location-picker>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button color="primary" (click)="onAddRepbase()" [disabled]="!form.valid">Добавить</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </ion-content>

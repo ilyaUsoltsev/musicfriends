@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button defaultHref="/repbases" text="Назад"></ion-back-button>
+        </ion-buttons>
+    <ion-title>{{repbase?.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-grid *ngIf="isLoading">
+  <ion-row>
+    <ion-col>
+      <ion-spinner></ion-spinner>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid *ngIf="!isLoading && repbase">
+  <ion-row>
+    <ion-col size-sm="6" offset-sm="3">
+      {{repbase.description}}
+    </ion-col>
+  </ion-row>
+  <ion-row>
+      <ion-col size-sm="6" offset-sm="3" no-padding>
+        <ion-img (click)="onShowFullMap()" class="location-image" [src]="repbase.location.staticMapImageUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+</ion-grid>
+</ion-content>

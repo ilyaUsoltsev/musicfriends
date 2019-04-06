@@ -1,0 +1,105 @@
+<ion-header>
+    <ion-toolbar>
+  
+      <ion-buttons slot="start">
+          <ion-menu-button menu="m1"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Поиск музыкантов</ion-title>
+      <ion-buttons slot="primary">
+          <ion-button (click)="onAddPost()">
+            <ion-icon name="add" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="background">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-segment (ionChange)="onFilterUpdate($event)" padding>
+              <ion-segment-button value="Музыкант" checked>
+              Группа ищет
+              </ion-segment-button>
+              <ion-segment-button value="Группа">
+              Музыкант ищет
+              </ion-segment-button>
+              <ion-segment-button value="Срочно">
+              Срочная замена
+              </ion-segment-button>
+            </ion-segment>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-list margin-bottom>
+            <ion-item class="ion-no-padding">
+                <ion-label>
+                  <ion-icon name="hammer" slot="icon-only"></ion-icon>
+                  Инструмент
+                </ion-label>
+                <ion-select (ionChange)="onInstrumentChange()" [(ngModel)]="instrument" okText="Да" cancelText="Отмена">
+                  <ion-select-option value="Гитара">Гитара</ion-select-option>
+                  <ion-select-option value="Вокал">Вокал</ion-select-option>
+                  <ion-select-option value="Бас">Бас</ion-select-option>
+                  <ion-select-option value="Барабаны">Барабаны</ion-select-option>
+                  <ion-select-option value="Клавиши">Клавиши</ion-select-option>
+                  <ion-select-option value="Духовые">Духовые</ion-select-option>
+                  <ion-select-option value="DJ/Sampler">DJ/Sampler</ion-select-option>
+                  <ion-select-option value="Другое">Другое</ion-select-option>
+                </ion-select>
+              </ion-item>
+            <ion-item class="ion-no-padding">
+                <ion-label>
+                  <ion-icon name="home" slot="icon-only"></ion-icon>
+                  Город</ion-label>
+                <ion-select (ionChange)="onCityChange()" [(ngModel)]="city" okText="Да" cancelText="Отмена">
+                  <ion-select-option value="Москва">Москва</ion-select-option>
+                  <ion-select-option value="СПБ">СПБ</ion-select-option>
+                  <ion-select-option value="Самара">Самара</ion-select-option>
+                  <ion-select-option value="Уфа">УФА</ion-select-option>
+                  <ion-select-option value="Новосибирск">Новосибирск</ion-select-option>
+                  <ion-select-option value="Омск">Омск</ion-select-option>
+                  <ion-select-option value="Другой">Другое</ion-select-option>
+                </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="isLoading">
+          <ion-col text-center>
+            <ion-spinner ></ion-spinner>
+          </ion-col>
+      </ion-row>
+      <ion-row *ngIf="posts?.length===0 && !isLoading">
+          <ion-col text-center>
+            <ion-text>Добавь запись. Будь первым!</ion-text>
+          </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!isLoading && posts?.length>0">
+        <ion-col text-center size-xs="10" offset-xs="1" size-sm="6" offset-sm="3">
+          <ion-virtual-scroll [items]="posts" [approxItemHeight]="'40px'">
+            <ion-item
+            *virtualItem = "let post"
+            [routerLink]="['/','posts', post.id, city, instrument, mode]"
+            detail
+            #postslist
+            no-padding
+            >
+              <ion-label class="transparent">
+                <ion-text class="post-title">{{post.title}}</ion-text>
+                <ion-text color="secondary" class="description">{{post.style}}</ion-text> 
+      
+              </ion-label>
+            </ion-item>
+          </ion-virtual-scroll>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="showNoMorePostsMessage && posts.length !== 0">
+        <ion-col text-center>
+          <ion-text>Можно еще поскролить, но видимо это все что есть...</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-content>
+  
