@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Post } from '../models/post.model';
 import { AuthService } from '../auth/auth.service';
 import { UUID } from 'angular2-uuid';
+import { CITIES } from '../db/cities';
 
 @Component({
   selector: 'app-add-post',
@@ -12,6 +13,8 @@ import { UUID } from 'angular2-uuid';
 export class AddPostPage implements OnInit {
   @Input() type: string;
   @Input() post: Post;
+  cityFromUser: string;
+  citiesNames = CITIES;
   constructor(private modalCtrl: ModalController,
               private authService: AuthService) { }
 
@@ -19,6 +22,10 @@ export class AddPostPage implements OnInit {
 
   onCancel() {
     this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  ionViewWillEnter() {
+    this.cityFromUser = this.authService.userCity.name;
   }
 
   onAddPost(form) {

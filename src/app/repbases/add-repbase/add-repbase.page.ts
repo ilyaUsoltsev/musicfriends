@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
-import { CITIES } from '../../db/cities';
+import { CITIES, CITIES_OBJ } from '../../db/cities';
 import { PlaceLocation } from '../../models/location.model';
 import { AuthService } from '../../auth/auth.service';
 import { LoadingController } from '@ionic/angular';
@@ -15,7 +15,8 @@ import { Repbase } from '../../models/repbase.model';
   styleUrls: ['./add-repbase.page.scss'],
 })
 export class AddRepbasePage implements OnInit {
-  cities = CITIES;
+  citiesNames = CITIES;
+  cities = CITIES_OBJ;
   form: FormGroup;
   constructor(private authService: AuthService,
               private loadingCtrl: LoadingController,
@@ -25,6 +26,10 @@ export class AddRepbasePage implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
+      city: new FormControl(this.authService.userCity.name, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
       title: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
@@ -64,7 +69,7 @@ export class AddRepbasePage implements OnInit {
       phone: this.form.value.phone,
       website: this.form.value.website || '',
       username: this.authService.username,
-      city: this.authService.userCity,
+      city: this.cities[this.form.value.city],
       userId: this.authService.userId
     };
     this.loadingCtrl.create({
@@ -72,9 +77,11 @@ export class AddRepbasePage implements OnInit {
     })
     .then( loadingEl => {
       loadingEl.present();
-      this.repbasesService.addRepbase(
-        newRepbase
-      ).then( () => {
+      Promise.all([
+        this.repbasesService.addRepbase(newRepbase),
+        this.repbasesService.addRepbaseToUser(newRepbase)
+      ])
+      .then( () => {
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['/repbases']);

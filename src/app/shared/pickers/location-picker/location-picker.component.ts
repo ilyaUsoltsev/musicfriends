@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MapModalComponent } from '../../map-modal/map-modal.component';
 import { HttpClient } from '@angular/common/http';
@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { PlaceLocation } from '../../../models/location.model';
+import { CITIES_OBJ } from '../../../db/cities';
 
 @Component({
   selector: 'app-location-picker',
@@ -14,9 +15,10 @@ import { PlaceLocation } from '../../../models/location.model';
 })
 export class LocationPickerComponent implements OnInit {
   selectedLocationImage: string;
+  cities = CITIES_OBJ;
   isLoading = false;
   @Output() locationPick = new EventEmitter<PlaceLocation>();
-
+  @Input() selectedCity;
   constructor(
     private modalCtrl: ModalController,
     private http: HttpClient
@@ -25,7 +27,10 @@ export class LocationPickerComponent implements OnInit {
   ngOnInit() {}
 
   onPickLocation() {
-    this.modalCtrl.create({component: MapModalComponent})
+    this.modalCtrl.create({component: MapModalComponent, componentProps: {
+      city: this.cities[this.selectedCity],
+      selectable: true
+    }})
       .then((modal) => {
         modal.onDidDismiss().then(modalData => {
           if (!modalData.data) {

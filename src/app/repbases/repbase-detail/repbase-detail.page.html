@@ -3,14 +3,24 @@
       <ion-buttons slot="start">
           <ion-back-button defaultHref="/repbases" text="Назад"></ion-back-button>
         </ion-buttons>
-    <ion-title>{{repbase?.title}}</ion-title>
+    <ion-title text-center>{{repbase?.title}}</ion-title>
+    <ng-container *ngIf="userId">
+        <ion-buttons *ngIf="userId === repbase?.userId" slot="primary">
+            <ion-button  (click)="onEditRepbase()">
+                <ion-icon slot="icon-only" name="create"></ion-icon>
+            </ion-button>
+            <ion-button  (click)="onDeleteRepbase()">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+      </ng-container>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 <ion-grid *ngIf="isLoading">
   <ion-row>
-    <ion-col>
+    <ion-col text-center size-sm="6" offset-sm="3">
       <ion-spinner></ion-spinner>
     </ion-col>
   </ion-row>

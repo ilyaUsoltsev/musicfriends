@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, OnD
 import { ModalController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../auth/auth.service';
+import { Repbase } from '../../models/repbase.model';
+import { City } from '../../models/location.model';
 
 @Component({
   selector: 'app-map-modal',
@@ -14,8 +16,9 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectable = true;
   @Input() closeButtonText = 'Cancel';
   @Input() title = 'Pick location';
-  @Input() center = this.authService.userIsAuthenticated ?
-  {lat: this.authService.userCity.lat, lng: this.authService.userCity.lng} : {lat: 1, lng: 2};
+  @Input() city: City = this.authService.userIsAuthenticated ?
+ this.authService.userCity : {name: 'Москва', lat: 55.75, lng: 37.61};
+  @Input() markers: Repbase[] = [];
 
   clickListener: any;
   googleMaps: any;
@@ -37,8 +40,9 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         this.googleMaps = googleMaps;
         const mapEl = this.mapElementRef.nativeElement;
         const map = new googleMaps.Map(mapEl, {
-          center: this.center,
-          zoom: 16
+          center: this.markers.length === 1 ?
+           {lat: this.markers[0].location.lat, lng: this.markers[0].location.lng} : {lat: this.city.lat, lng: this.city.lng},
+          zoom: this.markers.length > 1 ? 11 : 16
         });
         googleMaps.event.addListenerOnce(map, 'idle', () => {
           this.renderer.addClass(mapEl, 'visible');
@@ -49,12 +53,20 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalCtrl.dismiss(selectedCoords);
           });
         } else {
-          const marker = new googleMaps.Marker({
-            position: this.center,
-            map: map,
-            title: 'Picked Location'
-          });
-          marker.setMap(map);
+          const infoWindow = new googleMaps.InfoWindow();
+          for (const m of this.markers) {
+            const marker = new googleMaps.Marker({
+              position: {lat: m.location.lat, lng: m.location.lng},
+              map: map,
+              title: m.title,
+              optimized: false
+            });
+            marker.addListener('click', () => {
+              infoWindow.setContent(`${m.title}, phone: ${m.phone}`);
+              infoWindow.open(map, marker);
+            });
+            // marker.setMap(map);
+          }
         }
       }
     ).catch(err => console.log(err));

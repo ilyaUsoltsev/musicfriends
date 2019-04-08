@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="primary">
+          <ion-button (click)="onCancel()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title *ngIf="post">Редактируем</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content *ngIf="repbase">
+      <form #f="ngForm" (ngSubmit)="onUpdate(f)">
+        <ion-grid>
+          <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-item>
+                <ion-label>Город</ion-label>
+                <ion-input 
+                [ngModel]="repbase.city.name" 
+                name="city"
+                #cityCtrl="ngModel"
+                [disabled]="true"
+                >
+              </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+                <ion-label position="floating">Название</ion-label>
+                <ion-input
+                [ngModel]="repbase.title" 
+                name="title"
+                max-length="30"
+                type="text"
+                required
+                >
+                </ion-input>
+              </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Описание</ion-label>
+            <ion-input
+            type="text"
+            [ngModel]="repbase.description" 
+            required 
+            max-length="300"
+            name="description" 
+            placeholder="Описание базы"
+              ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Телефон</ion-label>
+            <ion-input 
+            [ngModel]="repbase.phone" 
+            required
+            type="tel"
+            name="phone" 
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Сайт</ion-label>
+            <ion-input 
+            [ngModel]="repbase.website || ''" 
+            placeholder = "https://example.com"
+            type="url"
+            name="website" 
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+          <ion-col size-sm="6" offset-sm="3">
+            <ion-item>
+              <ion-label position="floating">Цена от</ion-label>
+              <ion-input type="number" 
+              [ngModel]="repbase.priceFrom" 
+              required name="priceFrom"></ion-input>
+            </ion-item>
+          </ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <ion-col size-sm="6" offset-sm="3" no-padding>
+          <ion-img (click)="onShowFullMap()" class="location-image" [src]="repbase.location.staticMapImageUrl"></ion-img>
+        </ion-col>
+      </ion-row> -->
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button *ngIf="repbase" expand="block" type="submit" [disabled]='!f.valid'>Сохраниться</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+

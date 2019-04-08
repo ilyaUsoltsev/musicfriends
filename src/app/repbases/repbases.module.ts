@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RepbasesPage } from './repbases.page';
+import { SharedMapModule } from '../shared/sharedmap.module';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedMapModule,
     RouterModule.forChild(routes)
   ],
   declarations: [RepbasesPage]

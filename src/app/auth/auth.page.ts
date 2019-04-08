@@ -27,7 +27,6 @@ export class AuthPage implements OnInit {
     private alertCtrl: AlertController ) { }
 
   ngOnInit() {
-    console.log(this.authService.userIsAuthenticated);
   }
 
   onSubmit(form: NgForm) {
@@ -41,7 +40,7 @@ export class AuthPage implements OnInit {
     const password2 = form.value.password2;
     const city = form.value.city;
 
-    if (!this.isLogin && this.formErrors(username, password, password2)) {
+    if (!this.isLogin && this.formErrors(password, password2)) {
       return;
     }
 
@@ -49,24 +48,29 @@ export class AuthPage implements OnInit {
       this.authService.login(email, password)
       .then(() => {
         this.isLoading = false;
-        this.navCtrl.pop()
-          .then().catch(() => this.router.navigateByUrl('/'));
-        // this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/');
       })
       .then(() => {
         this.sharedService.createToast(`Привет, ${this.authService.username}!`);
       })
       .catch(err => this.showAlert('Ошибка', err));
     } else {
-      this.authService.createUser(email, password, username, city)
-        .then( () => {
-          this.showAlert('Успешно!', `${this.authService.username}, твой аккаунт создан!`);
-          this.navCtrl.pop()
-          .then().catch(() => this.router.navigateByUrl('/'));
-        })
-        .catch( (err) => {
-          this.showAlert('Oшибка', err);
-        });
+      this.userService.uniqueUser(username).subscribe((res) => {
+        if (res) {
+          this.authService.createUser(email, password, username, city)
+            .then( () => {
+              this.showAlert('Успешно!', `${this.authService.username}, твой аккаунт создан!`);
+              this.navCtrl.pop();
+              this.router.navigateByUrl('/');
+              form.reset();
+            })
+            .catch( (err) => {
+              this.showAlert('Oшибка', err);
+            });
+        } else {
+          this.showAlert('Ошибка', 'Такой username уже занят');
+        }
+      });
     }
   }
 
@@ -74,12 +78,9 @@ export class AuthPage implements OnInit {
     this.isLogin = !this.isLogin;
   }
 
-  formErrors(username: string, password: string, password2: string) {
+  formErrors(password: string, password2: string) {
     if (password !== password2) {
       this.showAlert('Ошибка', 'Пароли не совпадают :(');
-      return true;
-    } else if (!this.userService.uniqueUser(username)) {
-      this.showAlert('Oшибка', 'username занят :(');
       return true;
     } else {
       return false;

@@ -3,7 +3,7 @@
       <ion-buttons slot="start">
           <ion-back-button defaultHref="/repbases" text="Назад"></ion-back-button>
         </ion-buttons>
-    <ion-title>Добавить Базу</ion-title>
+    <ion-title text-center>Добавить Базу</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,13 +11,13 @@
     <form [formGroup]="form">
       <ion-grid>
         <ion-row>
-          <ion-col>
+          <ion-col size-sm="6" offset-sm="3">
             <ion-item>
                 <ion-label>
                     <ion-icon name="home" slot="icon-only"></ion-icon>
                     Город</ion-label>
-                  <ion-select [value]="this.authService.userCity.name" formControlName="title" okText="Да" cancelText="Отмена">
-                    <ion-select-option *ngFor="let city of cities" [value]="city">{{city}}</ion-select-option>
+                  <ion-select [value]="this.authService.userCity.name" formControlName="city" okText="Да" cancelText="Отмена" #selectedCity>
+                    <ion-select-option *ngFor="let city of citiesNames" [value]="city">{{city}}</ion-select-option>
                   </ion-select>
             </ion-item>
           </ion-col>
@@ -44,7 +44,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-sm="3" offset-sm="3">
+            <ion-col size-sm="6" offset-sm="3">
               <ion-item>
                 <ion-label position="floating">Цена за 3 часа (руб)</ion-label>
                 <ion-input type="number" placeholder="500" formControlName="priceFrom"></ion-input>
@@ -52,7 +52,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-sm="3" offset-sm="3">
+            <ion-col size-sm="6" offset-sm="3">
               <ion-item>
                 <ion-label position="floating">Сайт</ion-label>
                 <ion-input type="url" placeholder="https://suberbasa.rock" formControlName="website"></ion-input>
@@ -60,7 +60,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col size-sm="3" offset-sm="3">
+            <ion-col size-sm="6" offset-sm="3">
               <ion-item>
                 <ion-label position="floating">Телефон</ion-label>
                 <ion-input placeholder="212-85-06" type="tel" formControlName="phone"></ion-input>
@@ -68,12 +68,12 @@
             </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size-sm="3" offset-sm="3">
-            <app-location-picker (locationPick)="onLocationPicked($event)"></app-location-picker>
+          <ion-col size-sm="6" offset-sm="3">
+            <app-location-picker (locationPick)="onLocationPicked($event)" [selectedCity]="selectedCity.value"></app-location-picker>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col size-sm="6" offset-sm="3" text-center>
             <ion-button color="primary" (click)="onAddRepbase()" [disabled]="!form.valid">Добавить</ion-button>
           </ion-col>
         </ion-row>

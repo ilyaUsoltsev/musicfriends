@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { tap, take, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class PostsService {
   isLoading = new BehaviorSubject(false);
 
   constructor(private http: HttpClient,
+    private authService: AuthService,
     private afDB: AngularFirestore) { }
 
   get posts() {
@@ -41,12 +43,21 @@ export class PostsService {
     .set(newPost);
   }
 
+  addPostToUser(newPost: Post) {
+    return this.afDB.collection(`users`).doc(`${newPost.userId}`).collection(`posts`).doc(`${newPost.id}`)
+    .set(newPost);
+  }
+
   updatePost(newPost: Post, id: string) {
     return this.afDB.collection(`${newPost.city}+${newPost.instrument}+${newPost.mode}`).doc(`${id}`).update(newPost);
   }
 
   deletePost(newPost) {
-    return this.afDB.collection(`${newPost.city}+${newPost.instrument}+${newPost.mode}`).doc(`${newPost.id}`).delete();
+    return Promise.all([
+      this.afDB.collection(`${newPost.city}+${newPost.instrument}+${newPost.mode}`).doc(`${newPost.id}`).delete(),
+      this.afDB.collection(`users`).doc(`${this.authService.userId}`)
+        .collection('posts').doc(`${newPost.id}`).delete()
+    ]);
   }
 
 }

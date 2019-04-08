@@ -4,7 +4,7 @@
     <ion-buttons slot="start">
         <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Репбазы</ion-title>
+    <ion-title text-center>Репбазы</ion-title>
     <ion-buttons slot="primary">
         <ion-button (click)="onAddRepbase()">
           <ion-icon name="add" slot="icon-only" ></ion-icon>
@@ -15,15 +15,14 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-segment (ionChange)="onFilterUpdate($event)">
-            <ion-segment-button value="list" checked>
-              Список
-            </ion-segment-button>
-            <ion-segment-button value="map">
-              Карта
-            </ion-segment-button>
-          </ion-segment>
+      <ion-col size-sm="4" offset-sm="4">
+          <ion-button color="primary"
+          type="button" 
+          fill="outline"
+          expand="block"
+          [disabled]="isLoading"
+          (click)="onShowMap()"
+          >Все базы на карте</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -34,7 +33,7 @@
                     <ion-icon name="home" slot="icon-only"></ion-icon>
                     Город</ion-label>
                   <ion-select (ionChange)="onCityChange()" [(ngModel)]="selectedCity" okText="Да" cancelText="Отмена">
-                    <ion-select-option *ngFor="let city of cities" [value]="city">{{city}}</ion-select-option>
+                    <ion-select-option *ngFor="let city of citiesNames" [value]="city">{{city}}</ion-select-option>
                   </ion-select>
               </ion-item>
             </ion-list>
@@ -67,11 +66,6 @@
             </ion-label>
           </ion-item>
         </ion-virtual-scroll>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        map all
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -39,7 +39,6 @@ export class PostDetailPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/');
         return;
       }
-      console.log('postdetail');
       this.postId = paramMap.get('postId');
       this.city = paramMap.get('city');
       this.instrument = paramMap.get('instrument');

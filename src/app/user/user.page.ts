@@ -10,10 +10,9 @@ import { UserService } from './user.service';
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
 })
-export class UserPage implements OnInit, OnDestroy {
+export class UserPage implements OnInit {
   username: string;
   user: User;
-  userSub = new Subscription();
   isLoading = false;
   constructor(private activatedRoute: ActivatedRoute,
               private navCtrl: NavController,
@@ -27,17 +26,12 @@ export class UserPage implements OnInit, OnDestroy {
         return;
       }
       this.username = paramMap.get('username');
-      this.userSub = this.userService.getUserByUsername(this.username).subscribe(
+      this.userService.getUserByUsername(this.username).subscribe(
         (user) => {
           this.isLoading = false;
-          this.user = user;
+          this.user = user[0];
         }
       );
     });
   }
-
-  ngOnDestroy() {
-    this.userSub.unsubscribe();
-  }
-
 }

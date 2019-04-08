@@ -4,7 +4,7 @@
       <ion-buttons slot="start">
           <ion-menu-button menu="m1"></ion-menu-button>
       </ion-buttons>
-      <ion-title>Поиск музыкантов</ion-title>
+      <ion-title text-center>Поиск музыкантов</ion-title>
       <ion-buttons slot="primary">
           <ion-button (click)="onAddPost()">
             <ion-icon name="add" slot="icon-only"></ion-icon>
@@ -53,14 +53,8 @@
                   <ion-icon name="home" slot="icon-only"></ion-icon>
                   Город</ion-label>
                 <ion-select (ionChange)="onCityChange()" [(ngModel)]="city" okText="Да" cancelText="Отмена">
-                  <ion-select-option value="Москва">Москва</ion-select-option>
-                  <ion-select-option value="СПБ">СПБ</ion-select-option>
-                  <ion-select-option value="Самара">Самара</ion-select-option>
-                  <ion-select-option value="Уфа">УФА</ion-select-option>
-                  <ion-select-option value="Новосибирск">Новосибирск</ion-select-option>
-                  <ion-select-option value="Омск">Омск</ion-select-option>
-                  <ion-select-option value="Другой">Другое</ion-select-option>
-                </ion-select>
+                  <ion-select-option *ngFor="let cityName of citiesNames" [value]="cityName">{{cityName}}</ion-select-option> 
+               </ion-select>
             </ion-item>
           </ion-list>
         </ion-col>

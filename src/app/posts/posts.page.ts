@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared/shared.service';
+import { CITIES } from '../db/cities';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class PostsPage implements OnInit, OnDestroy {
   instrument = 'Гитара';
   city = 'Москва';
   mode = 'Музыкант';
+  citiesNames = CITIES;
 
   constructor(private actionSheetCtrl: ActionSheetController,
     private postsService: PostsService,
@@ -32,7 +34,11 @@ export class PostsPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController) {}
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
     this.isLoading = true;
+    this.city = this.authService.userIsAuthenticated ? this.authService.userCity.name : 'Москва';
     this.loadPosts();
   }
 
@@ -91,7 +97,10 @@ export class PostsPage implements OnInit, OnDestroy {
       .then(result => {
         if (result.role === 'confirm') {
           const newPost: Post = result.data.post;
-          this.postsService.addPost(newPost)
+          Promise.all([
+            this.postsService.addPost(newPost),
+            this.postsService.addPostToUser(newPost)
+          ])
           .then(() => {
             this.sharedService.createToast('Добавлено');
           });

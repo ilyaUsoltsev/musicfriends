@@ -3,10 +3,80 @@
       <ion-buttons slot="start">
           <ion-menu-button menu="m1"></ion-menu-button>
       </ion-buttons>
-    <ion-title>Ваш Профиль</ion-title>
+    <ion-title text-center>Ваш Профиль</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid *ngIf="!isLoading">
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3" text-center>
+        <h2>{{this.authService.username}}</h2>
+        <p>{{this.authService.userCity.name}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="2" offset-sm="5">
+        <ion-img *ngIf="!!image" [src]="image"></ion-img>
+        <ion-item>
+            <ion-input type="text" placeholder="URL аватарки" [(ngModel)]="image"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-textarea placeholder="Пару слов о себе..." rows="4" [(ngModel)]="description"></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    <ion-row margin-bottom>
+        <ion-col size-sm="6" offset-sm="3" text-center>
+            <ion-button 
+            color="primary"
+            type="button" 
+            fill="outline" 
+            (click)="onSaveProfile()"
+            >Сохранить</ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="posts?.length>0">
+      <ion-col size-sm="6" offset-sm="3">
+        <h2>ВАШИ ПОСТЫ</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="posts?.length">
+      <ion-col size-sm="6" offset-sm="3">
+        <ion-list>
+          <ion-item 
+          *ngFor="let post of posts" 
+          color="secondary"
+          no-padding 
+          [routerLink]="['/','posts', post.id, post.city, post.instrument, post.mode]"
+           >
+          <ion-label text-center class="post-title">{{post.title}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="repbases?.length>0">
+      <ion-col size-sm="6" offset-sm="3">
+        <h2>ВАШИ РЕПБАЗЫ</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="repbases?.length>0">
+      <ion-col size-sm="6" offset-sm="3">
+        <ion-list>
+          <ion-item 
+          *ngFor="let repbase of repbases" 
+          color="tertiary"
+          no-padding 
+          [routerLink]="['/','repbases', repbase.id, repbase.city.name]"
+           >
+          <ion-label text-center class="post-title">{{repbase.title}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
