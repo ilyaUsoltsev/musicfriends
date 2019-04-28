@@ -5,7 +5,7 @@ import { User } from '../models/user.model';
 import { NavController } from '@ionic/angular';
 import { CITIES, CITIES_OBJ } from '../db/cities';
 import { City } from '../models/location.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { Post } from '../models/post.model';
 import { Repbase } from '../models/repbase.model';
@@ -16,6 +16,7 @@ import { Repbase } from '../models/repbase.model';
 export class AuthService {
   isLoading = false;
   private _userIsAuthenticated = false;
+  authSubject = new BehaviorSubject<boolean>(false);
   private _userId: string;
   private _username: string;
   private _userDescription: string;
@@ -53,6 +54,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
     .then((response) => {
       this._userIsAuthenticated = true;
+      this.authSubject.next(true);
       return this.afDB.doc(`users/${ response.user.uid }`).get().toPromise();
     })
     .then( (user) => {
@@ -68,6 +70,7 @@ export class AuthService {
   logout() {
     return this.afAuth.auth.signOut().then( () => {
       this._userIsAuthenticated = false;
+      this.authSubject.next(false);
       this._userId = null;
       this._username = null;
       this._userCity = null;
@@ -87,6 +90,7 @@ export class AuthService {
       })
       .then((id) => {
         this._userIsAuthenticated = true;
+        this.authSubject.next(true);
         this._username = username;
         this._userId = id;
         this._userCity = this.citiesObj[city];

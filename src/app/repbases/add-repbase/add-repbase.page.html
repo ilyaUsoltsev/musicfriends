@@ -16,7 +16,7 @@
                 <ion-label>
                     <ion-icon name="home" slot="icon-only"></ion-icon>
                     Город</ion-label>
-                  <ion-select [value]="this.authService.userCity.name" formControlName="city" okText="Да" cancelText="Отмена" #selectedCity>
+                  <ion-select [value]="cityByDefault" formControlName="city" okText="Да" cancelText="Отмена" #selectedCity>
                     <ion-select-option *ngFor="let city of citiesNames" [value]="city">{{city}}</ion-select-option>
                   </ion-select>
             </ion-item>

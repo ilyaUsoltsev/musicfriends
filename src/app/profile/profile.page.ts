@@ -6,6 +6,7 @@ import { User } from '../models/user.model';
 import { Post } from '../models/post.model';
 import { Repbase } from '../models/repbase.model';
 import { RepbasesService } from '../repbases/repbases.service';
+import { City } from '../models/location.model';
 
 @Component({
   selector: 'app-profile',
@@ -19,10 +20,11 @@ export class ProfilePage implements OnInit, OnDestroy {
   isLoading = false;
   image: string;
   description: string;
-  username;
+  username: string;
   user: User;
   posts: Post[] = [];
   repbases: Repbase[] = [];
+  userCity: string;
 
   constructor(
     private authService: AuthService,
@@ -35,6 +37,8 @@ export class ProfilePage implements OnInit, OnDestroy {
       this.user = user.data() as User;
       this.description = this.user.description || '';
       this.image = this.user.image || '';
+      this.username = this.user.username || '';
+      this.userCity = this.user.city.name || '';
     });
     this.postsSub = this.authService.getUserPosts().subscribe((posts) => this.posts = posts);
     this.repbasesSub = this.authService.getUserRepbases().subscribe((repbases) => {

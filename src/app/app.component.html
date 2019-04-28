@@ -27,13 +27,13 @@
                   <ion-label>Профиль</ion-label>
                 </ion-item>
               </ion-menu-toggle>
-              <ion-menu-toggle *ngIf="authService.userIsAuthenticated">
+              <ion-menu-toggle *ngIf="isAuthenticated">
                 <ion-item (click)="onLogout()" button>
                   <ion-icon name="exit" slot="start"></ion-icon>
                   <ion-label>Выйти</ion-label>
                 </ion-item>
               </ion-menu-toggle>
-              <ion-menu-toggle *ngIf="!authService.userIsAuthenticated">
+              <ion-menu-toggle *ngIf="!isAuthenticated">
                 <ion-item routerLink="/auth" button>
                   <ion-icon name="exit" slot="start"></ion-icon>
                   <ion-label>Войти</ion-label>

@@ -18,6 +18,7 @@ export class AddRepbasePage implements OnInit {
   citiesNames = CITIES;
   cities = CITIES_OBJ;
   form: FormGroup;
+  cityByDefault: string;
   constructor(private authService: AuthService,
               private loadingCtrl: LoadingController,
               private repbasesService: RepbasesService,
@@ -25,6 +26,7 @@ export class AddRepbasePage implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.cityByDefault = this.authService.userCity.name;
     this.form = new FormGroup({
       city: new FormControl(this.authService.userCity.name, {
         updateOn: 'blur',

@@ -12,6 +12,9 @@ import { SharedService } from './shared/shared.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+
+  isAuthenticated = false;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -28,13 +31,14 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.authService.authSubject.subscribe(res => this.isAuthenticated = res);
   }
 
   onLogout() {
+    this.router.navigateByUrl('/');
     this.authService.logout()
     .then(() => {
       this.sharedService.createToast('Ciao!');
-      this.router.navigateByUrl('/');
     });
   }
 }
