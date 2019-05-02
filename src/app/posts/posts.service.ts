@@ -24,7 +24,7 @@ export class PostsService {
 
   getAllPost(city: string, instrument: string, mode: string) {
     return this.afDB.collection(`${city}+${instrument}+${mode}`, ref => ref
-    .orderBy('date', 'desc').limit(200))
+    .orderBy('date', 'desc').limit(100))
     .snapshotChanges().pipe(
       map((docData) => {
         return docData.map( doc => {

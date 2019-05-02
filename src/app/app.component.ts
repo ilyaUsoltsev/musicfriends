@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 
 import { Platform, ToastController } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Plugins, Capacitor } from '@capacitor/core';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 import { SharedService } from './shared/shared.service';
@@ -19,17 +18,16 @@ export class AppComponent {
     private authService: AuthService,
     private router: Router,
     private sharedService: SharedService,
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private platform: Platform
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        Plugins.SplashScreen.hide();
+      }
     });
     this.authService.authSubject.subscribe(res => this.isAuthenticated = res);
   }

@@ -1,5 +1,7 @@
 {
   "name": "MusicFriends",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
